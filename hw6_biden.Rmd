@@ -1,0 +1,51 @@
+---
+title: "Joe Biden and Titanic "
+author: "Abby Bergman"
+date: "11/6/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(dplyr)
+library(modelr)
+```
+
+```{r}
+#Do women display higher feeling thermometer ratings for Joe Biden than men?
+
+#get the data
+library(readr)
+biden <- read_csv("data/biden.csv")
+View(biden)
+```
+
+```{r}
+#Estimate a basic (single variable) linear regression model of the relationship between gender and feelings towards Joe Biden. 
+bid_mod <- lm(female ~ biden, data = biden)
+coef(bid_mod)
+
+summary(bid_mod)
+#Calculate predicted values, graph the relationship between the two variables using the predicted values, and determine whether there appears to be a significant relationship.
+
+grid <- biden %>% 
+  data_grid(female, biden) 
+grid
+
+grid <- grid %>% 
+  add_predictions(bid_mod) 
+grid
+
+ggplot(biden, aes(biden)) +
+  geom_line(aes(y = female), alpha = .2) +
+  geom_line(aes(y = pred), data = grid, color = "red", size = 1)
+
+```
+
+
+```{r}
+#Build the best predictive linear regression model of attitudes towards Joe Biden given the variables you have available. In this context, “best” is defined as the model with the lowest MSE. Compare at least three different model formulations (aka different combinations of variables). Use 10-fold cross-validation to avoid a biased estimate of MSE.
+
+```

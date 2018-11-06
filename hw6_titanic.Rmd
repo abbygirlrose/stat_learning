@@ -1,0 +1,51 @@
+---
+title: "Titanic"
+author: "Abby Bergman"
+date: "11/6/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(dplyr)
+library(modelr)
+library(broom)
+```
+
+```{r}
+#load data
+library(titanic)
+
+#open titanic train data set
+titanic_train
+```
+
+```{r}
+#Estimate three different logistic regression models with Survived as the response variable. You may use any combination of the predictors to estimate these models. Don’t just reuse the models from the notes.
+
+#survival by fare
+survive_fare <- glm(Survived ~ Fare, data = titanic_train, family = binomial)
+summary(survive_fare)
+
+#survival by class
+survive_class <- glm(Survived ~ Pclass, data = titanic_train, family = binomial)
+summary(survive_class)
+
+#survival by sex
+survive_sex <- glm(Survived ~ Sex, data = titanic_train, family = binomial)
+summary(survive_sex)
+```
+
+```{r}
+#Calculate the leave-one-out-cross-validation error rate for each model. Which model performs the best?
+```
+
+```{r}
+#Now estimate three random forest models. Generate random forests with 500 trees apiece.
+
+#Generate variable importance plots for each random forest model. Which variables seem the most important?
+
+#Calculate the out-of-bag error rate for each random forest model. Which performs the best?
+```
+

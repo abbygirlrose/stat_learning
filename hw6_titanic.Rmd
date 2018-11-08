@@ -11,6 +11,8 @@ library(tidyverse)
 library(dplyr)
 library(modelr)
 library(broom)
+library(partykit)
+library(caret)
 ```
 
 ```{r}
@@ -119,9 +121,40 @@ loocv_data %>%
 
 ```{r}
 #Now estimate three random forest models. Generate random forests with 500 trees apiece.
+#convert qualitative to factors
+titanic_tree_data <- titanic_train %>%
+  mutate(Survived = if_else(Survived == 1, "Survived", "Died"),
+         Survived = as.factor(Survived),
+         Sex = as.factor(Sex))
+titanic_tree_data
 
+#make data ready for rf
+titanic_rf_data <- titanic_tree_data %>%
+  select(Survived, Pclass, Sex, Age, SibSp, Parch, Fare, Embarked) %>%
+  na.omit()
+titanic_rf_data
+
+#run rf for age + Pclass
+age_class_rf <- train(Survived ~ Age + Pclass, data = titanic_rf_data,
+                   method = "rf",
+                   ntree = 500,
+                   trControl = trainControl(method = "oob"))
+
+age_class_rf
+
+#run rf for sex + Pclass
+sex_class_rf <- train(Survived ~ Sex + Pclass, data = titanic_rf_data,
+                   method = "rf",
+                   ntree = 500,
+                   trControl = trainControl(method = "oob"))
+
+sex_class_rf
 #Generate variable importance plots for each random forest model. Which variables seem the most important?
 
+
+
 #Calculate the out-of-bag error rate for each random forest model. Which performs the best?
+age_class_rf$finalModel
+
 ```
 

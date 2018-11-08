@@ -39,6 +39,82 @@ summary(survive_sex)
 
 ```{r}
 #Calculate the leave-one-out-cross-validation error rate for each model. Which model performs the best?
+#survive_fare======================================================
+#begin cross validation
+loocv_data <- loo_cv(titanic_train)
+loocv_data
+#
+
+holdout_results <- function(splits){
+
+  mod <- glm(Survived ~ Fare, data = analysis(splits)
+             )  
+  holdout <- assessment(splits)
+  
+  res <- augment(mod, newdata = holdout) %>%
+    mutate(.resid = Survived -.fitted)
+  res
+}
+
+#use map
+loocv_data$results <- map(loocv_data$splits, holdout_results)
+loocv_data$mse <- map_dbl(loocv_data$results, ~mean(.$.resid^2))
+loocv_data
+
+#overall MSE
+loocv_data %>%
+  summarize(mse_fare = mean(mse))
+#survive_class=====================================================
+#begin cross validation
+loocv_data <- loo_cv(titanic_train)
+loocv_data
+#
+
+holdout_results <- function(splits){
+
+  mod <- glm(Survived ~ Pclass, data = analysis(splits)
+             )  
+  holdout <- assessment(splits)
+  
+  res <- augment(mod, newdata = holdout) %>%
+    mutate(.resid = Survived -.fitted)
+  res
+}
+
+#use map
+loocv_data$results <- map(loocv_data$splits, holdout_results)
+loocv_data$mse <- map_dbl(loocv_data$results, ~mean(.$.resid^2))
+loocv_data
+
+#overall MSE
+loocv_data %>%
+  summarize(mse_class = mean(mse))
+
+#survive_sex======================================================
+#begin cross validation
+loocv_data <- loo_cv(titanic_train)
+loocv_data
+#
+
+holdout_results <- function(splits){
+
+  mod <- glm(Survived ~ Sex, data = analysis(splits)
+             )  
+  holdout <- assessment(splits)
+  
+  res <- augment(mod, newdata = holdout) %>%
+    mutate(.resid = Survived -.fitted)
+  res
+}
+
+#use map
+loocv_data$results <- map(loocv_data$splits, holdout_results)
+loocv_data$mse <- map_dbl(loocv_data$results, ~mean(.$.resid^2))
+loocv_data
+
+#overall MSE
+loocv_data %>%
+  summarize(mse_sex = mean(mse))
 ```
 
 ```{r}

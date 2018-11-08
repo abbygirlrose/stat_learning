@@ -11,6 +11,10 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(dplyr)
 library(modelr)
+library(broom)
+library(rsample)
+library(magrittr)
+library(caret )
 ```
 
 ```{r}
@@ -24,7 +28,7 @@ View(biden)
 
 ```{r}
 #Estimate a basic (single variable) linear regression model of the relationship between gender and feelings towards Joe Biden. 
-bid_mod <- lm(female ~ biden, data = biden)
+bid_mod <- lm(biden ~ female, data = biden)
 coef(bid_mod)
 
 summary(bid_mod)
@@ -38,14 +42,62 @@ grid <- grid %>%
   add_predictions(bid_mod) 
 grid
 
-ggplot(biden, aes(biden)) +
-  geom_line(aes(y = female), alpha = .2) +
-  geom_line(aes(y = pred), data = grid, color = "red", size = 1)
+#make new df with predicted values
+pred <- augment(bid_mod, type.predict = "response")
 
+ggplot(data = pred, aes(x = female, y = biden)) +
+  geom_point(alpha = .2) +
+  geom_line(data = pred, aes(y=.fitted), color = "red", size = 1)
+#to do: transform female to male/female factor
 ```
 
 
 ```{r}
 #Build the best predictive linear regression model of attitudes towards Joe Biden given the variables you have available. In this context, “best” is defined as the model with the lowest MSE. Compare at least three different model formulations (aka different combinations of variables). Use 10-fold cross-validation to avoid a biased estimate of MSE.
+
+biden_age_pid <- lm(biden ~ age*pid, data = biden)
+summary(biden_age_pid)
+
+biden_pid <- lm(biden ~ pid, data = biden)
+summary(biden_pid)
+
+biden_age <- lm(biden ~ age, data = biden)
+summary(biden_age)
+
+#for age*pid 
+# function to generate assessment statistics for titanic model
+
+holdout_results <- function(splits, i) {
+  # Fit the model to the training set
+  mod <- glm(biden ~ age*pid, data = analysis(splits),
+             family = binomial)
+
+  # Save the heldout observations
+  holdout <- assessment(splits)
+
+  # `augment` will save the predictions with the holdout data set
+  res <- augment(mod, newdata = assessment(splits)) %>% 
+    as_tibble() %>%
+    mutate(pred = logit2prob(.fitted),
+           pred = as.numeric(pred > .5))
+
+  # Return the assessment data set with the additional columns
+  res
+}
+
+#make factor
+as.factor(biden$female)
+as.factor(biden)
+
+splits
+
+# basic model
+pid_age_cv10 <- vfold_cv(data = biden, v = 10) %>%
+  mutate(results = map(splits, holdout_results),
+         mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
+mean(pid_age_cv10$mse, na.rm = TRUE)
+
+
+
 
 ```

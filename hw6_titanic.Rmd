@@ -28,15 +28,21 @@ titanic_train
 #Estimate three different logistic regression models with Survived as the response variable. You may use any combination of the predictors to estimate these models. Don’t just reuse the models from the notes.
 
 #survival by fare
-survive_fare <- glm(Survived ~ Fare, data = titanic_train, family = binomial)
+survive_fare <- glm(Survived ~ Fare, 
+                    data = titanic_train, 
+                    family = binomial)
 summary(survive_fare)
 
 #survival by class
-survive_class <- glm(Survived ~ Pclass, data = titanic_train, family = binomial)
+survive_class <- glm(Survived ~ Pclass, 
+                     data = titanic_train, 
+                     family = binomial)
 summary(survive_class)
 
 #survival by sex
-survive_sex <- glm(Survived ~ Sex, data = titanic_train, family = binomial)
+survive_sex <- glm(Survived ~ Sex, 
+                   data = titanic_train, 
+                   family = binomial)
 summary(survive_sex)
 ```
 
@@ -47,7 +53,6 @@ summary(survive_sex)
 #begin cross validation
 loocv_data <- loo_cv(titanic_train)
 loocv_data
-#
 
 holdout_results <- function(splits){
 
@@ -127,10 +132,11 @@ loocv_data
 loocv_data %>%
   summarize(mse_sex = mean(mse))
 ```
-The mean squared error rate for survival by sex is 0.167
+The mean squared error rate for survival by sex is 0.167. Because survival by sex has the lowest MSE (.167), the model of survival by sex is the best.
+
 ```{r}
 #Now estimate three random forest models. Generate random forests with 500 trees apiece.
-#convert qualitative to factors
+#convert qualitative to factors so that random forest will work
 titanic_tree_data <- titanic_train %>%
   mutate(Survived = if_else(Survived == 1, "Survived", "Died"),
          Survived = as.factor(Survived),
@@ -138,15 +144,15 @@ titanic_tree_data <- titanic_train %>%
 
 #make data ready for rf
 titanic_rf_data <- titanic_tree_data %>%
-  select(Survived, Pclass, Sex, Age, SibSp, Parch, Fare, Embarked) %>%
-  na.omit()
+  select(Survived, Pclass, Sex, Age, SibSp, Parch, Fare, Embarked) %>% #select variables I want
+  na.omit() #get rid of NAs
 titanic_rf_data
 
 #run rf for age + Pclass
 age_class_rf <- train(Survived ~ Age + Pclass, data = titanic_rf_data,
                    method = "rf",
-                   ntree = 500,
-                   trControl = trainControl(method = "oob"))
+                   ntree = 500, #how many trees
+                   trControl = trainControl(method = "oob")) #set method
 
 age_class_rf
 
@@ -165,7 +171,6 @@ sex_class_age_rf <- train(Survived ~ Sex + Pclass + Age, data = titanic_rf_data,
 ```
 
 ```{r}
-sex_class_age_rf
 #Generate variable importance plots for each random forest model. Which variables seem the most important?
 #age and class
 randomForest::varImpPlot(age_class_rf$finalModel)
@@ -173,19 +178,31 @@ randomForest::varImpPlot(age_class_rf$finalModel)
 randomForest::varImpPlot(sex_class_rf$finalModel)
 #sex, class, and age
 randomForest::varImpPlot(sex_class_age_rf$finalModel)
+
 ```
+The three variable difference plots allow us to see which variables are most important in each model. For the age and class random forest, age is the more important variable. For the sex and class random forest, sex is the more important varible. For the random forest that takes into account sex, age, and class, age is the most important variable, followed by sex and class.
 
 ```{r}
 #Calculate the out-of-bag error rate for each random forest model. Which performs the best?
 #age and class
 age_class_rf$finalModel
-print("OOB Estimate = 20.87%")
+
 #sex and class
 sex_class_rf$finalModel
-print("OOB Estimate = 20.87%")
+
 #sex, class, and age
 sex_class_age_rf$finalModel
-print("OOB Estimate = 18.35%")
 
 ```
+The out of bag estimates for both the age and class random forest and the sex and class random forest is 20.87%. The out of bag estimate for the age, sex, class random forest is 18.35%. The random forest that included more variables performed better. 
+
+
+
+
+
+
+
+
+
+
 

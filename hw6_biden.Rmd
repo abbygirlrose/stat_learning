@@ -23,11 +23,12 @@ library(caret )
 #get the data
 library(readr)
 biden <- read_csv("data/biden.csv")
-View(biden)
 ```
 
 ```{r}
-#Estimate a basic (single variable) linear regression model of the relationship between gender and feelings towards Joe Biden. 
+#Estimate a basic (single variable) linear regression model of the relationship between gender and feelings towards Joe Biden.
+biden 
+
 bid_mod <- lm(biden ~ female, data = biden)
 coef(bid_mod)
 
@@ -39,7 +40,9 @@ grid <- biden %>%
 grid
 
 grid <- grid %>% 
-  add_predictions(bid_mod) 
+  add_predictions(bid_mod)
+    
+
 grid
 
 #make new df with predicted values
@@ -47,7 +50,46 @@ pred <- augment(bid_mod, type.predict = "response")
 
 ggplot(data = pred, aes(x = female, y = biden)) +
   geom_point(alpha = .2) +
-  geom_line(data = pred, aes(y=.fitted), color = "red", size = 1)
+  geom_line(data = pred, 
+            aes(y=.fitted), 
+            color = "red", size = 1) +
+  labs(title = "Graph of Sex vs Opinion of Joe Biden") + scale_x_discrete(limits = c("0", "1"), labels = c("Female", "Male"))
+
+
+
+#to do: transform female to male/female factor
+
+#Estimate a basic (single variable) linear regression model of the relationship between gender and feelings towards Joe Biden.
+biden <- biden%>%
+  mutate(female = factor(female))%>%
+  mutate(sex = if_else(female == 1, "Female", "Male"))%>%
+  mutate(sex = factor(sex))
+
+bid_mod <- lm(biden ~ sex, data = biden)
+coef(bid_mod)
+
+summary(bid_mod)
+#Calculate predicted values, graph the relationship between the two variables using the predicted values, and determine whether there appears to be a significant relationship.
+
+grid <- biden %>% 
+  data_grid(sex, biden) 
+grid
+
+grid <- grid %>% 
+  add_predictions(bid_mod)
+    
+
+grid
+
+#make new df with predicted values
+pred <- augment(bid_mod, type.predict = "response")
+
+ggplot(data = pred, aes(x = sex, y = biden)) +
+  geom_point(alpha = .2) +
+  geom_line(data = pred, 
+            aes(y=.fitted), 
+            color = "red", size = 1) +
+  labs(title = "Graph of Sex vs Opinion of Joe Biden")
 #to do: transform female to male/female factor
 ```
 

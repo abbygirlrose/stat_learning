@@ -84,7 +84,8 @@ grid
 #make new df with predicted values
 pred <- augment(bid_mod, type.predict = "response")
 
-ggplot(data = pred, aes(x = sex, y = biden)) +
+ggplot(data = pred, 
+       aes(x = sex, y = biden)) +
   geom_point(alpha = .2) +
   geom_line(data = pred, 
             aes(y=.fitted), 
@@ -127,9 +128,6 @@ holdout_results <- function(splits, i) {
   res
 }
 
-#make factor
-as.factor(biden$female)
-as.factor(biden)
 
 splits
 

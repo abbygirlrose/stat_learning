@@ -10,7 +10,7 @@ Files for HW 6 can be found here:
 
 [Titanic Rmd](https://github.com/abbygirlrose/hw06/blob/master/hw6_titanic.Rmd)
 
-[Titanic md]()
+[Titanic md](https://github.com/abbygirlrose/hw06/blob/master/hw6_titanic.md)
 
 
 

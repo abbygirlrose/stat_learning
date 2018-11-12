@@ -81,7 +81,7 @@ The mean squared error for survival by fare is 0.222
 #begin cross validation
 loocv_data <- loo_cv(titanic_train)
 loocv_data
-#
+
 
 holdout_results <- function(splits){
 
@@ -154,7 +154,6 @@ age_class_rf <- train(Survived ~ Age + Pclass, data = titanic_rf_data,
                    ntree = 500, #how many trees
                    trControl = trainControl(method = "oob")) #set method
 
-age_class_rf
 
 #run rf for sex + Pclass
 sex_class_rf <- train(Survived ~ Sex + Pclass, data = titanic_rf_data,

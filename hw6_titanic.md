@@ -145,16 +145,16 @@ loocv_data
     ## # A tibble: 891 x 4
     ##    splits       id         results             mse
     ##    <list>       <chr>      <list>            <dbl>
-    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.121
-    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.461
-    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.127
-    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.135
-    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.104
-    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.117
-    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.117
-    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.104
-    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.307
-    ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.269
+    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.105
+    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.146
+    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.400
+    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.104
+    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.137
+    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.104
+    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.141
+    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.248
+    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.721
+    ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.103
     ## # ... with 881 more rows
 
 ``` r
@@ -196,8 +196,6 @@ loocv_data
     ## # ... with 881 more rows
 
 ``` r
-#
-
 holdout_results <- function(splits){
 
   mod <- glm(Survived ~ Pclass, data = analysis(splits)
@@ -219,15 +217,15 @@ loocv_data
     ## # A tibble: 891 x 4
     ##    splits       id         results              mse
     ##    <list>       <chr>      <list>             <dbl>
-    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.0616
-    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.309 
-    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.568 
-    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.129 
-    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.0616
-    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.0616
+    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.415 
+    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.0616
+    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.0616
+    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.415 
+    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.415 
+    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.568 
     ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.0616
-    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.415 
-    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.415 
+    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.568 
+    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.0616
     ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.568 
     ## # ... with 881 more rows
 
@@ -274,16 +272,16 @@ loocv_data
     ## # A tibble: 891 x 4
     ##    splits       id         results              mse
     ##    <list>       <chr>      <list>             <dbl>
-    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.660 
-    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.660 
+    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.0358
+    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.554 
     ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.0670
     ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.0358
-    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.0358
-    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.0670
-    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.0358
-    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.0670
+    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.660 
+    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.0358
+    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.0670
+    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.0358
     ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.0358
-    ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.0670
+    ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.0358
     ## # ... with 881 more rows
 
 ``` r
@@ -322,24 +320,6 @@ age_class_rf <- train(Survived ~ Age + Pclass, data = titanic_rf_data,
 ```
 
     ## note: only 1 unique complexity parameters in default grid. Truncating the grid to 1 .
-
-``` r
-age_class_rf
-```
-
-    ## Random Forest 
-    ## 
-    ## 714 samples
-    ##   2 predictor
-    ##   2 classes: 'Died', 'Survived' 
-    ## 
-    ## No pre-processing
-    ## Resampling results:
-    ## 
-    ##   Accuracy   Kappa   
-    ##   0.6848739  0.321986
-    ## 
-    ## Tuning parameter 'mtry' was held constant at a value of 2
 
 ``` r
 #run rf for sex + Pclass
@@ -414,11 +394,11 @@ age_class_rf$finalModel
     ##                      Number of trees: 500
     ## No. of variables tried at each split: 2
     ## 
-    ##         OOB estimate of  error rate: 32.07%
+    ##         OOB estimate of  error rate: 30.39%
     ## Confusion matrix:
     ##          Died Survived class.error
-    ## Died      341       83   0.1957547
-    ## Survived  146      144   0.5034483
+    ## Died      342       82   0.1933962
+    ## Survived  135      155   0.4655172
 
 ``` r
 #sex and class
@@ -450,10 +430,10 @@ sex_class_age_rf$finalModel
     ##                      Number of trees: 500
     ## No. of variables tried at each split: 3
     ## 
-    ##         OOB estimate of  error rate: 18.77%
+    ##         OOB estimate of  error rate: 17.93%
     ## Confusion matrix:
     ##          Died Survived class.error
-    ## Died      374       50   0.1179245
-    ## Survived   84      206   0.2896552
+    ## Died      382       42   0.0990566
+    ## Survived   86      204   0.2965517
 
 The out of bag estimates for both the age and class random forest and the sex and class random forest is 20.87%. The out of bag estimate for the age, sex, class random forest is 18.35%. The random forest that included more variables performed better.

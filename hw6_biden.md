@@ -39,7 +39,7 @@ bid_mod <- lm(biden ~ female, data = biden)
     ## Multiple R-squared:  0.01524,    Adjusted R-squared:  0.01471 
     ## F-statistic:  28.8 on 1 and 1861 DF,  p-value: 9.026e-08
 
-As shown above, the relationship between feelings towards biden and gender is significant with a p-value of less than .05 (p=9.03e-08).
+As shown above, the relationship between feelings towards biden and gender is significant with a p-value of less than .05 (p = 9.03e-08).
 
 ``` r
 #Build the best predictive linear regression model of attitudes towards Joe Biden given the variables you have available. In this context, “best” is defined as the model with the lowest MSE. Compare at least three different model formulations (aka different combinations of variables). Use 10-fold cross-validation to avoid a biased estimate of MSE.
@@ -116,7 +116,7 @@ pid_age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(pid_age_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 401.0195
+    ## [1] 401.2702
 
 ``` r
 #error = 401.055
@@ -128,7 +128,7 @@ pid_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(pid_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 402.2054
+    ## [1] 401.5815
 
 ``` r
 #error = 402.2789
@@ -140,7 +140,7 @@ age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(age_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 549.7225
+    ## [1] 550.5062
 
 ``` r
 #error = 551.0212
@@ -173,7 +173,7 @@ age_pid_gender_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(age_pid_gender_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 397.0449
+    ## [1] 398.3642
 
 ``` r
 #error = 397.4093

@@ -44,7 +44,7 @@ grid <- grid %>%
 #make new df with predicted values
 pred <- augment(bid_mod, type.predict = "response")
 
-ggplot(data = pred, aes(x = female, y = biden)) +
+ggplot(data = pred, aes(x = female, y = biden, group = 1)) +
   geom_point(alpha = .2) +
   geom_line(data = pred, 
             aes(y=.fitted), 
@@ -53,7 +53,7 @@ ggplot(data = pred, aes(x = female, y = biden)) +
 
 summary(bid_mod)
 ```
-As shown above, the relationship between feelings towards biden and gender is significant with a p-value of less than .05 (p=9.03e-08). 
+As shown above, the relationship between feelings towards biden and gender is significant with a p-value of less than .05 (p =   9.03e-08). The coefficient is 5.833 for the variable "female".
 
 
 ```{r}

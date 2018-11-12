@@ -1,4 +1,4 @@
-Joe Biden and Titanic
+Joe Biden
 ================
 Abby Bergman
 11/6/2018
@@ -237,31 +237,142 @@ ggplot(data = pred,
 #to do: transform female to male/female factor
 ```
 
-Build the best predictive linear regression model of attitudes towards Joe Biden given the variables you have available. In this context, “best” is defined as the model with the lowest MSE. Compare at least three different model formulations (aka different combinations of variables). Use 10-fold cross-validation to avoid a biased estimate of MSE.
-============================================================================================================================================================================================================================================================================================================================================================
+``` r
+#Build the best predictive linear regression model of attitudes towards Joe Biden given the variables you have available. In this context, “best” is defined as the model with the lowest MSE. Compare at least three different model formulations (aka different combinations of variables). Use 10-fold cross-validation to avoid a biased estimate of MSE.
 
-biden\_age\_pid &lt;- lm(biden ~ age\*pid, data = biden) summary(biden\_age\_pid)
+biden_age_pid <- lm(biden ~ age+pid, data = biden)
 
-biden\_pid &lt;- lm(biden ~ pid, data = biden) summary(biden\_pid)
+biden_pid <- lm(biden ~ pid, data = biden)
 
-biden\_age &lt;- lm(biden ~ age, data = biden) summary(biden\_age)
+biden_age <- lm(biden ~ age, data = biden)
 
-for age\*pid \# function to generate assessment statistics for titanic model
-============================================================================
+#for age+pid 
+# function to generate assessment statistics for titanic model
 
-holdout\_results &lt;- function(splits, i) { \# Fit the model to the training set mod &lt;- glm(biden ~ age\*pid, data = analysis(splits), family = binomial)
+holdout_results_pid_age <- function(splits) {
+  # Fit the model to the training set
+  mod <- glm(biden ~ age+pid, data = analysis(splits))
 
-\# Save the heldout observations holdout &lt;- assessment(splits)
+  # Save the heldout observations
+  holdout <- assessment(splits)
 
-\# `augment` will save the predictions with the holdout data set res &lt;- augment(mod, newdata = assessment(splits)) %&gt;% as\_tibble() %&gt;% mutate(pred = logit2prob(.fitted), pred = as.numeric(pred &gt; .5))
+  # `augment` will save the predictions with the holdout data set
+  res <- augment(mod, newdata = holdout) %>% 
+    mutate(.resid = biden -.fitted)
 
-\# Return the assessment data set with the additional columns res }
+  # Return the assessment data set with the additional columns
+  res
+}
 
-splits
+#for pid
+# function to generate assessment statistics for titanic model
 
-basic model
-===========
+holdout_results_pid <- function(splits) {
+  # Fit the model to the training set
+  mod <- glm(biden ~ pid, data = analysis(splits))
 
-pid\_age\_cv10 &lt;- vfold\_cv(data = biden, v = 10) %&gt;% mutate(results = map(splits, holdout\_results), mse = map\_dbl(results, ~ mean(..*r**e**s**i**d*<sup>2</sup>)))*m**e**a**n*(*p**i**d*<sub>*a*</sub>*g**e*<sub>*c*</sub>*v*10mse, na.rm = TRUE)
+  # Save the heldout observations
+  holdout <- assessment(splits)
 
-\`\`\`
+  # `augment` will save the predictions with the holdout data set
+  res <- augment(mod, newdata = holdout) %>% 
+    mutate(.resid = biden -.fitted)
+
+  # Return the assessment data set with the additional columns
+  res
+}
+
+#for age
+# function to generate assessment statistics for titanic model
+
+holdout_results_age <- function(splits) {
+  # Fit the model to the training set
+  mod <- glm(biden ~ age, data = analysis(splits))
+
+  # Save the heldout observations
+  holdout <- assessment(splits)
+
+  # `augment` will save the predictions with the holdout data set
+  res <- augment(mod, newdata = holdout) %>% 
+    mutate(.resid = biden -.fitted)
+
+  # Return the assessment data set with the additional columns
+  res
+}
+
+#remove nas
+biden_new <- biden%>%
+  na.omit()
+  
+
+# CV for pid and age
+pid_age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
+  mutate(results = map(splits, holdout_results_pid_age),
+         mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
+mean(pid_age_cv10$mse, na.rm = TRUE)
+```
+
+    ## [1] 402.3524
+
+``` r
+#error = 401.055
+
+#CV for pid
+pid_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
+  mutate(results = map(splits, holdout_results_pid),
+         mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
+mean(pid_cv10$mse, na.rm = TRUE)
+```
+
+    ## [1] 401.6874
+
+``` r
+#error = 402.2789
+
+#CV for age
+age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
+  mutate(results = map(splits, holdout_results_age),
+         mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
+mean(age_cv10$mse, na.rm = TRUE)
+```
+
+    ## [1] 550.6561
+
+``` r
+#error = 551.0212
+```
+
+The model that takes into account both party ID and age has the lowest error rate (401.0555). The error for the model with only party ID was only slightly higher (402.2789) but the model that only took age into account was much higher (551.0212).
+
+``` r
+#what happens if we include gender in the model?
+biden_age_pid_gender <- lm(biden ~ age+pid+female, data = biden)
+
+holdout_results_age_pid_gender <- function(splits) {
+  # Fit the model to the training set
+  mod <- glm(biden ~ age+pid+female, data = analysis(splits))
+
+  # Save the heldout observations
+  holdout <- assessment(splits)
+
+  # `augment` will save the predictions with the holdout data set
+  res <- augment(mod, newdata = holdout) %>% 
+    mutate(.resid = biden -.fitted)
+
+  # Return the assessment data set with the additional columns
+  res
+}
+
+age_pid_gender_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
+  mutate(results = map(splits, holdout_results_age_pid_gender),
+         mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
+mean(age_pid_gender_cv10$mse, na.rm = TRUE)
+```
+
+    ## [1] 399.5266
+
+``` r
+#error = 397.4093
+```
+
+Here we see that when we include the gender variable in the model, the error rate is lowered to 397.4093 so this is a better model.

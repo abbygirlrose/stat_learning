@@ -146,7 +146,7 @@ titanic_tree_data <- titanic_train %>%
 titanic_rf_data <- titanic_tree_data %>%
   select(Survived, Pclass, Sex, Age, SibSp, Parch, Fare, Embarked) %>% #select variables I want
   na.omit() #get rid of NAs
-titanic_rf_data
+
 
 #run rf for age + Pclass
 age_class_rf <- train(Survived ~ Age + Pclass, data = titanic_rf_data,

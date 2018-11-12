@@ -1,5 +1,5 @@
 ---
-title: "Titanic"
+title: "Exploring Titanic Data"
 author: "Abby Bergman"
 date: "11/6/2018"
 output: github_document

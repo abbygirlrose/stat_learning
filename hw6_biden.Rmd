@@ -1,5 +1,5 @@
 ---
-title: "Joe Biden"
+title: "Exploring the Relationship Between Joe Biden Ratings and Gender"
 author: "Abby Bergman"
 date: "11/6/2018"
 output: github_document
@@ -17,7 +17,7 @@ library(magrittr)
 library(caret )
 ```
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 #Do women display higher feeling thermometer ratings for Joe Biden than men?
 
 #get the data
@@ -25,17 +25,18 @@ library(readr)
 biden <- read_csv("data/biden.csv")
 ```
 
-```{r}
+```{r, inlude = FALSE}
 #Estimate a basic (single variable) linear regression model of the relationship between gender and feelings towards Joe Biden.
-biden 
 
 bid_mod <- lm(biden ~ female, data = biden)
+```
 
+```{r, echo = FALSE}
 #Calculate predicted values, graph the relationship between the two variables using the predicted values, and determine whether there appears to be a significant relationship.
 
 grid <- biden %>% 
   data_grid(female, biden) 
-grid
+
 
 grid <- grid %>% 
   add_predictions(bid_mod)
@@ -50,11 +51,9 @@ ggplot(data = pred, aes(x = female, y = biden)) +
             color = "red", size = 1) +
   labs(title = "Graph of Sex vs Opinion of Joe Biden", y = "Opinion of Biden", x = "Gender") + scale_x_discrete(limits = c("0", "1"), labels = c("Men", "Women"))
 
-
-
-
-
+summary(bid_mod)
 ```
+As shown above, the relationship between feelings towards biden and gender is significant with a p-value of less than .05 (p=9.03e-08). 
 
 
 ```{r}

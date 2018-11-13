@@ -1,6 +1,6 @@
 # hw06
 
-#Files for HW 6 can be found here:
+### Files for HW 6 can be found here:
 
 [Biden Rmd](https://github.com/abbygirlrose/hw06/blob/master/hw6_biden.Rmd)
 
@@ -17,7 +17,7 @@
 [Titanic Figures](https://github.com/abbygirlrose/hw06/tree/master/hw6_titanic_files/figure-markdown_github)
 
 
-#Packages needed:
+### Packages needed:
 tidyverse
 
 dplyr

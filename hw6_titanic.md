@@ -145,16 +145,16 @@ loocv_data
     ## # A tibble: 891 x 4
     ##    splits       id         results             mse
     ##    <list>       <chr>      <list>            <dbl>
-    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.105
-    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.146
-    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.400
-    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.104
-    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.137
-    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.104
-    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.141
-    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.248
-    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.721
-    ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.103
+    ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.136
+    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.115
+    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.398
+    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.178
+    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.398
+    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.443
+    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.199
+    ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.157
+    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.336
+    ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.104
     ## # ... with 881 more rows
 
 ``` r
@@ -220,12 +220,12 @@ loocv_data
     ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.415 
     ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.0616
     ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.0616
-    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.415 
-    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.415 
-    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.568 
-    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.0616
+    ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.0616
+    ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.0616
+    ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.198 
+    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.198 
     ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.568 
-    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.0616
+    ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.129 
     ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.568 
     ## # ... with 881 more rows
 
@@ -273,12 +273,12 @@ loocv_data
     ##    splits       id         results              mse
     ##    <list>       <chr>      <list>             <dbl>
     ##  1 <S3: rsplit> Resample1  <tibble [1 × 16]> 0.0358
-    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.554 
-    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.0670
+    ##  2 <S3: rsplit> Resample2  <tibble [1 × 16]> 0.0670
+    ##  3 <S3: rsplit> Resample3  <tibble [1 × 16]> 0.0358
     ##  4 <S3: rsplit> Resample4  <tibble [1 × 16]> 0.0358
     ##  5 <S3: rsplit> Resample5  <tibble [1 × 16]> 0.660 
     ##  6 <S3: rsplit> Resample6  <tibble [1 × 16]> 0.0358
-    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.0670
+    ##  7 <S3: rsplit> Resample7  <tibble [1 × 16]> 0.0358
     ##  8 <S3: rsplit> Resample8  <tibble [1 × 16]> 0.0358
     ##  9 <S3: rsplit> Resample9  <tibble [1 × 16]> 0.0358
     ## 10 <S3: rsplit> Resample10 <tibble [1 × 16]> 0.0358
@@ -394,11 +394,11 @@ age_class_rf$finalModel
     ##                      Number of trees: 500
     ## No. of variables tried at each split: 2
     ## 
-    ##         OOB estimate of  error rate: 30.39%
+    ##         OOB estimate of  error rate: 31.65%
     ## Confusion matrix:
     ##          Died Survived class.error
-    ## Died      342       82   0.1933962
-    ## Survived  135      155   0.4655172
+    ## Died      341       83   0.1957547
+    ## Survived  143      147   0.4931034
 
 ``` r
 #sex and class
@@ -430,10 +430,10 @@ sex_class_age_rf$finalModel
     ##                      Number of trees: 500
     ## No. of variables tried at each split: 3
     ## 
-    ##         OOB estimate of  error rate: 17.93%
+    ##         OOB estimate of  error rate: 18.21%
     ## Confusion matrix:
     ##          Died Survived class.error
-    ## Died      382       42   0.0990566
-    ## Survived   86      204   0.2965517
+    ## Died      379       45   0.1061321
+    ## Survived   85      205   0.2931034
 
 The out of bag estimates for both the age and class random forest and the sex and class random forest is 20.87%. The out of bag estimate for the age, sex, class random forest is 18.35%. The random forest that included more variables performed better.

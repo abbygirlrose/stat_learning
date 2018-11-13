@@ -9,6 +9,8 @@ Abby Bergman
 #get the data
 library(readr)
 biden <- read_csv("data/biden.csv")
+
+biden$female <- factor(biden$female, levels=c(0,1), labels=c("Male", "Female"))
 ```
 
 ``` r
@@ -28,9 +30,9 @@ bid_mod <- lm(biden ~ female, data = biden)
     ## -64.577 -14.577   1.257  20.423  41.257 
     ## 
     ## Coefficients:
-    ##             Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   58.743      0.811  72.437  < 2e-16 ***
-    ## female         5.833      1.087   5.367 9.03e-08 ***
+    ##              Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    58.743      0.811  72.437  < 2e-16 ***
+    ## femaleFemale    5.833      1.087   5.367 9.03e-08 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -39,7 +41,7 @@ bid_mod <- lm(biden ~ female, data = biden)
     ## Multiple R-squared:  0.01524,    Adjusted R-squared:  0.01471 
     ## F-statistic:  28.8 on 1 and 1861 DF,  p-value: 9.026e-08
 
-As shown above, the relationship between feelings towards biden and gender is significant with a p-value of less than .05 (p = 9.03e-08).
+As shown above, the relationship between feelings towards biden and gender is significant with a p-value of less than .05 (p = 9.03e-08). The coefficient is 5.833 for the variable "female".
 
 ``` r
 #Build the best predictive linear regression model of attitudes towards Joe Biden given the variables you have available. In this context, “best” is defined as the model with the lowest MSE. Compare at least three different model formulations (aka different combinations of variables). Use 10-fold cross-validation to avoid a biased estimate of MSE.
@@ -116,11 +118,9 @@ pid_age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(pid_age_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 401.2702
+    ## [1] 401.3634
 
 ``` r
-#error = 401.055
-
 #CV for pid
 pid_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
   mutate(results = map(splits, holdout_results_pid),
@@ -128,11 +128,9 @@ pid_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(pid_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 401.5815
+    ## [1] 402.1301
 
 ``` r
-#error = 402.2789
-
 #CV for age
 age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
   mutate(results = map(splits, holdout_results_age),
@@ -140,13 +138,9 @@ age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(age_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 550.5062
+    ## [1] 550.1624
 
-``` r
-#error = 551.0212
-```
-
-The model that takes into account both party ID and age has the lowest error rate (401.0555). The error for the model with only party ID was only slightly higher (402.2789) but the model that only took age into account was much higher (551.0212).
+The model that takes into account both party ID and age has the lowest error rate. The error for the model with only party ID was only slightly higher but the model that only took age into account was much higher (see values in results above).
 
 ``` r
 #what happens if we include gender in the model?
@@ -173,10 +167,6 @@ age_pid_gender_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
 mean(age_pid_gender_cv10$mse, na.rm = TRUE)
 ```
 
-    ## [1] 398.3642
+    ## [1] 397.7029
 
-``` r
-#error = 397.4093
-```
-
-Here we see that when we include the gender variable in the model, the error rate is lowered to 397.4093 so this is a better model.
+Here we see that when we include the gender variable in the model, the error rate is lowered to 397.7192 so this is a better model.

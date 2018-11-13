@@ -23,6 +23,10 @@ library(caret )
 #get the data
 library(readr)
 biden <- read_csv("data/biden.csv")
+
+biden$female <- factor(biden$female, levels=c(0,1), labels=c("Male", "Female"))
+
+
 ```
 
 ```{r, inlude = FALSE}
@@ -44,12 +48,9 @@ grid <- grid %>%
 #make new df with predicted values
 pred <- augment(bid_mod, type.predict = "response")
 
-ggplot(data = pred, aes(x = female, y = biden, group = 1)) +
-  geom_point(alpha = .2) +
-  geom_line(data = pred, 
-            aes(y=.fitted), 
-            color = "red", size = 1) +
-  labs(title = "Graph of Sex vs Opinion of Joe Biden", y = "Opinion of Biden", x = "Gender") + scale_x_discrete(limits = c("0", "1"), labels = c("Men", "Women"))
+ggplot(data = pred, aes(x = female, group = 1)) +
+  geom_line(aes(y=.fitted)) +
+  labs(title = "Graph of Gender vs Opinion of Joe Biden", y = "Opinion of Biden", x = "Gender") 
 
 summary(bid_mod)
 ```
@@ -129,27 +130,23 @@ pid_age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
   mutate(results = map(splits, holdout_results_pid_age),
          mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
 mean(pid_age_cv10$mse, na.rm = TRUE)
-#error = 401.055
+
 
 #CV for pid
 pid_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
   mutate(results = map(splits, holdout_results_pid),
          mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
 mean(pid_cv10$mse, na.rm = TRUE)
-#error = 402.2789
 
 #CV for age
 age_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
   mutate(results = map(splits, holdout_results_age),
          mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
 mean(age_cv10$mse, na.rm = TRUE)
-#error = 551.0212
-
-
 
 ```
-The model that takes into account both party ID and age has the lowest error rate (401.0555). The error for the model with only party ID was only slightly higher (402.2789) but the model that only took age into account was much higher (551.0212). 
 
+The model that takes into account both party ID and age has the lowest error rate. The error for the model with only party ID was only slightly higher  but the model that only took age into account was much higher (see values in results above). 
 
 ```{r}
 #what happens if we include gender in the model?
@@ -174,6 +171,5 @@ age_pid_gender_cv10 <- vfold_cv(data = biden_new, v = 10) %>%
   mutate(results = map(splits, holdout_results_age_pid_gender),
          mse = map_dbl(results, ~ mean(.$.resid ^ 2)))
 mean(age_pid_gender_cv10$mse, na.rm = TRUE)
-#error = 397.4093
 ```
-Here we see that when we include the gender variable in the model, the error rate is lowered to 397.4093 so this is a better model.
+Here we see that when we include the gender variable in the model, the error rate is lowered to 397.7192 so this is a better model.
